@@ -1,31 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import Avatar from "boring-avatars";
 import {
   FaRegCircleXmark,
   FaLocationDot,
-  FaPhone,
-  FaEnvelope,
+  FaHeart,
+  FaBowlFood,
 } from "react-icons/fa6";
 
 import Modal from "./modal";
 
-import { User } from "./types/user";
+import { Animal } from "./types/user";
 
-export type GalleryProps = {
-  users: User[];
+type Props = {
+  animals: Animal[]
+}
+
+type FieldProps = {
+  value: string;
+  children: ReactNode;
 };
-const Gallery = ({ users }: GalleryProps) => {
-  const [usersList, setUsersList] = useState(users);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+const FieldValues = ({ value, children }: React.PropsWithChildren<FieldProps>) => {
+  return (
+    <div className="field">
+      {children}
+      <div className="value">{value}</div>
+    </div>
+  )
+}
+
+
+const Gallery = ({ animals }: Props) => {
+  const [animalsList, setanimalsList] = useState(animals);
+  const [selectedUser, setSelectedUser] = useState<Animal | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleModalOpen = (id: number) => {
-    const user = usersList.find((item) => item.id === id) || null;
+  const handleModalOpen = (id: string) => {
+    const animal = animalsList.find((item) => item.id === id) || null;
 
-    if(user) {
-      setSelectedUser(user);
+    if (animal) {
+      setSelectedUser(animal);
       setIsModalOpen(true);
     }
   };
@@ -37,25 +53,25 @@ const Gallery = ({ users }: GalleryProps) => {
 
   return (
     <div className="user-gallery">
-      <h1 className="heading">Users</h1>
+      <h1 className="heading">animals</h1>
       <div className="items">
-        {usersList.map((user, index) => (
+        {animalsList?.map((animal, index) => (
           <div
             className="item user-card"
             key={index}
-            onClick={() => handleModalOpen(user.id)}
+            onClick={() => handleModalOpen(animal.id)}
           >
             <div className="body">
               <Avatar
                 size={96}
-                name={user.name}
+                name={animal.animal}
                 variant="marble"
                 colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
               />
             </div>
             <div className="info">
-              <div className="name">{user.name}</div>
-              <div className="company">{user.company.name}</div>
+              <div className="name">{animal.animal}</div>
+              <div className="company">{animal.habitat}</div>
             </div>
           </div>
         ))}
@@ -77,7 +93,7 @@ const Gallery = ({ users }: GalleryProps) => {
                   <div className="avatar">
                     <Avatar
                       size={240}
-                      name={selectedUser.name}
+                      name={selectedUser.animal}
                       variant="marble"
                       colors={[
                         "#92A1C6",
@@ -89,26 +105,18 @@ const Gallery = ({ users }: GalleryProps) => {
                     />
                   </div>
                   <div className="name">
-                    {selectedUser.name} ({selectedUser.username})
+                    {selectedUser.animal} ({selectedUser.scientific_name})
                   </div>
-                  <div className="field">
+                  <FieldValues value={`${selectedUser.average_lifespan} years old`}>
+                    <FaHeart className="icon" />
+                  </FieldValues>
+                  <FieldValues value={selectedUser.habitat}>
                     <FaLocationDot className="icon" />
-                    <div className="data">{`${selectedUser.address.street}, ${selectedUser.address.suite}, ${selectedUser.address.city}`}</div>
-                  </div>
-                  <div className="field">
-                    <FaPhone className="icon" />
-                    <div className="value">{selectedUser.phone}</div>
-                  </div>
-                  <div className="fields">
-                    <FaEnvelope className="icon" />
-                    <div className="value">{selectedUser.email}</div>
-                  </div>
-                  <div className="company">
-                    <div className="name">{selectedUser.company.name}</div>
-                    <div className="catchphrase">
-                      {selectedUser.company.catchPhrase}
-                    </div>
-                  </div>
+                  </FieldValues>
+                  <FieldValues value={selectedUser.diet}>
+                    <FaBowlFood className="icon" />
+                  </FieldValues>
+
                 </div>
               )}
             </div>

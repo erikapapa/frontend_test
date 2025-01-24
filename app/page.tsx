@@ -1,7 +1,6 @@
 "use client"
 
-import { useState, useEffect, useContext } from "react";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import "./css/loader.css"
 
@@ -242,22 +241,21 @@ export default function Home() {
     },
   ];
 
-  const [userList, setUserList] = useState([]);
+  const [animalsList, setAnimalsList] = useState([]);
 
   // data from personal firebase database - has a 30 days lifespan 
   useEffect(() => {
-    fetch("https://frontend-test-3e12c-default-rtdb.firebaseio.com/users.json")
+    fetch("https://frontend-test-3e12c-default-rtdb.firebaseio.com/animals.json")
       .then((response) => response.json())
-      .then((data) => setUserList(data));
+      .then((data) => setAnimalsList(data));
 
   }, []);
-
 
   return (
     <main className={styles.main}>
       {
-        userList.length === 0 ?
-          <span className="loader"></span> : <Gallery users={userList} />
+        animalsList.length === 0 ?
+          <span className="loader"></span> : <Gallery animals={animalsList} />
       }
     </main>
 
