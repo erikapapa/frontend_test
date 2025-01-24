@@ -1,9 +1,13 @@
-import Image from "next/image";
+"use client"
+
+import { useState, useEffect } from "react";
 import styles from "./page.module.css";
+import "./css/loader.css"
 
 import Gallery from "./gallery";
 
 export default function Home() {
+  // data from https://jsonplaceholder.typicode.com/users
   const users = [
     {
       id: 1,
@@ -236,9 +240,24 @@ export default function Home() {
       },
     },
   ];
+
+  const [animalsList, setAnimalsList] = useState([]);
+
+  // data from personal firebase database - has a 30 days lifespan 
+  useEffect(() => {
+    fetch("https://frontend-test-3e12c-default-rtdb.firebaseio.com/animals.json")
+      .then((response) => response.json())
+      .then((data) => setAnimalsList(data));
+
+  }, []);
+
   return (
     <main className={styles.main}>
-      <Gallery users={users} />
+      {
+        animalsList.length === 0 ?
+          <span className="loader"></span> : <Gallery animals={animalsList} />
+      }
     </main>
+
   );
 }

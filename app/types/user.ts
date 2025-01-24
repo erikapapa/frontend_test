@@ -27,3 +27,12 @@ export type Geo = {
   lat: string;
   lng: string;
 };
+
+export type Animal = {
+  id: string;
+  animal: string;
+  scientific_name: string;
+  habitat: string;
+  diet: string;
+  average_lifespan: number;
+};
