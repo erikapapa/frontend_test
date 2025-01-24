@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Avatar from "boring-avatars";
 import {
   FaRegCircleXmark,
@@ -31,16 +31,21 @@ const Gallery = ({ users }: GalleryProps) => {
     }
   };
 
+  const getUsers = (sortedUsers: User[]) => {
+    setUsersList([...sortedUsers]);
+  }
+
   const handleModalClose = () => {
     setSelectedUser(null);
     setIsModalOpen(false);
   };
 
+  
   return (
     <div className="user-gallery">
       <div className="heading">
         <h1 className="title">Users</h1>
-        <Controls />
+        <Controls users={usersList} getUsers={getUsers} />
       </div>
       <div className="items">
         {usersList.map((user, index) => (
