@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Avatar from "boring-avatars";
 import {
   FaRegCircleXmark,
@@ -9,6 +9,7 @@ import {
   FaEnvelope,
 } from "react-icons/fa6";
 
+import Controls from "./controls";
 import Modal from "./modal";
 
 import { User } from "./types/user";
@@ -24,20 +25,28 @@ const Gallery = ({ users }: GalleryProps) => {
   const handleModalOpen = (id: number) => {
     const user = usersList.find((item) => item.id === id) || null;
 
-    if(user) {
+    if (user) {
       setSelectedUser(user);
       setIsModalOpen(true);
     }
   };
+
+  const getUsers = (sortedUsers: User[]) => {
+    setUsersList([...sortedUsers]);
+  }
 
   const handleModalClose = () => {
     setSelectedUser(null);
     setIsModalOpen(false);
   };
 
+  
   return (
     <div className="user-gallery">
-      <h1 className="heading">Users</h1>
+      <div className="heading">
+        <h1 className="title">Users</h1>
+        <Controls users={usersList} getUsers={getUsers} />
+      </div>
       <div className="items">
         {usersList.map((user, index) => (
           <div
