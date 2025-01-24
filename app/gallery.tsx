@@ -53,7 +53,7 @@ const Gallery = ({ animals }: Props) => {
 
   return (
     <div className="user-gallery">
-      <h1 className="heading">animals</h1>
+      <h1 className="heading">Animals</h1>
       <div className="items">
         {animalsList?.map((animal, index) => (
           <div
